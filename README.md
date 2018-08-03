@@ -21,4 +21,4 @@ go get -u github.com/mitchellh/mapstructure
 ```
 
 ### A very good example of go api server
-https://github.com/hugomd/go-todo/blob/master/Gopkg.toml
+https://github.com/hugomd/go-todo
