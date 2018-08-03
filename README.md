@@ -1,13 +1,26 @@
 # go\_restful\_playground
 
+### api server
 ```bash
 go get -u golang.org/x/lint/golint
 go get -u github.com/gin-gonic/gin
 go get -u github.com/jinzhu/gorm
 go get -u github.com/mattn/go-sqlite3
+go get -u github.com/lib/pq
+go get -u github.com/satori/go.uuid
 go run main.go
 ```
 
+#### dockerization
+```bash
+./create-binary.sh
+docker-compose build
+docker-compose up -d
+
+docker container stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+docker rmi $(docker images -q)
+```
 
 ### scanner
 ```bash
