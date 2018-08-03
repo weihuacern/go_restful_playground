@@ -8,6 +8,7 @@ go get -u github.com/jinzhu/gorm
 go get -u github.com/mattn/go-sqlite3
 go get -u github.com/lib/pq
 go get -u github.com/satori/go.uuid
+go get -u github.com/tsenart/vegeta
 go run main.go
 ```
 
@@ -16,6 +17,9 @@ go run main.go
 ./create-binary.sh
 docker-compose build
 docker-compose up -d
+
+cd benchmarks
+./post.sh
 
 docker container stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
