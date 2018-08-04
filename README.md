@@ -1,6 +1,8 @@
 # go\_restful\_playground
 
 ### api server
+
+#### go packages
 ```bash
 go get -u golang.org/x/lint/golint
 go get -u github.com/gin-gonic/gin
@@ -11,6 +13,9 @@ go get -u github.com/satori/go.uuid
 go get -u github.com/tsenart/vegeta
 go run main.go
 ```
+#### install docker on ubuntu
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04
+https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-16-04
 
 #### dockerization
 ```bash
