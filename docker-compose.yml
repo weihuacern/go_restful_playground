@@ -13,7 +13,7 @@ services:
       - PORT=8080
       - PG_USER=helios
       - PG_PASSWORD=helios
-      - PG_HOST=127.0.0.1
+      - PG_HOST=postgres
       - PG_PORT=5432
       - PG_DB=bedb
     ports:
