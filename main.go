@@ -1,7 +1,7 @@
 package main
 
 import (
-	TaskController "./controllers"
+	APIController "./controllers"
 	"./db"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -18,10 +18,20 @@ func main() {
 	{
 		tasks := v1.Group("/tasks")
 		{
-			tasks.GET("/", TaskController.GetTasks)
-			tasks.POST("/", TaskController.CreateTask)
-			tasks.PUT("/:id", TaskController.UpdateTask)
-			tasks.DELETE("/:id", TaskController.DeleteTask)
+			tasks.GET("/", APIController.GetTasks)
+			tasks.POST("/", APIController.CreateTask)
+			tasks.PUT("/:id", APIController.UpdateTask)
+			tasks.DELETE("/:id", APIController.DeleteTask)
+		}
+		ddn := v1.Group("/ddn")
+		{
+			appportals := ddn.Group("/appportals")
+			{
+				appportals.GET("/", APIController.GetAppPortals)
+				appportals.POST("/", APIController.CreateAppPortal)
+				appportals.PUT("/:id", APIController.UpdateAppPortal)
+				appportals.DELETE("/:id", APIController.DeleteAppPortal)
+			}
 		}
 	}
 

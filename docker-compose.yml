@@ -11,11 +11,11 @@ services:
       - postgres
     environment:
       - PORT=8080
-      - PG_USER=postgres
-      - PG_PASSWORD=secret
-      - PG_HOST=postgres
+      - PG_USER=helios
+      - PG_PASSWORD=helios
+      - PG_HOST=127.0.0.1
       - PG_PORT=5432
-      - PG_DB=tasks
+      - PG_DB=bedb
     ports:
       - 8080:8080
   
@@ -28,8 +28,8 @@ services:
       timeout: 30s
       retries: 3
     environment:
-      - POSTGRES_PASSWORD=secret
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=tasks
+      - POSTGRES_PASSWORD=helios
+      - POSTGRES_USER=helios
+      - POSTGRES_DB=bedb
     ports:
       - 5432:5432

@@ -24,10 +24,10 @@ func getEnv(key, fallback string) string {
 // migrates any new models
 func Init() {
 	user := getEnv("PG_USER", "helios")
-	password := getEnv("PG_PASSWORD", "")
+	password := getEnv("PG_PASSWORD", "helios")
 	host := getEnv("PG_HOST", "localhost")
 	port := getEnv("PG_PORT", "8080")
-	database := getEnv("PG_DB", "tasks")
+	database := getEnv("PG_DB", "bedb")
 
 	dbinfo := fmt.Sprintf("user=%s password=%s host=%s port=%s dbname=%s sslmode=disable",
 		user,
@@ -52,6 +52,15 @@ func Init() {
 	}
 
 	db.AutoMigrate(&models.Task{})
+
+	if !db.HasTable(&models.AppPortal{}) {
+		err := db.CreateTable(&models.AppPortal{})
+		if err != nil {
+			log.Println("Table already exists")
+		}
+	}
+
+	db.AutoMigrate(&models.AppPortal{})
 }
 
 //GetDB ...
