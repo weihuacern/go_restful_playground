@@ -20,6 +20,17 @@ func getEnv(key, fallback string) string {
 	return fallback
 }
 
+func ModelDBMigrate(thismodel interface{}) {
+	if !db.HasTable(thismodel) {
+		err := db.CreateTable(thismodel)
+		if err != nil {
+			log.Println("Table already exists")
+		}
+	}
+
+	db.AutoMigrate(thismodel)
+}
+
 // Init creates a connection to mysql database and
 // migrates any new models
 func Init() {
@@ -44,23 +55,8 @@ func Init() {
 	}
 	log.Println("Database connected")
 
-	if !db.HasTable(&models.Task{}) {
-		err := db.CreateTable(&models.Task{})
-		if err != nil {
-			log.Println("Table already exists")
-		}
-	}
-
-	db.AutoMigrate(&models.Task{})
-
-	if !db.HasTable(&models.AppPortal{}) {
-		err := db.CreateTable(&models.AppPortal{})
-		if err != nil {
-			log.Println("Table already exists")
-		}
-	}
-
-	db.AutoMigrate(&models.AppPortal{})
+	ModelDBMigrate(&models.Task{})
+	ModelDBMigrate(&models.AppPortal{})
 }
 
 //GetDB ...

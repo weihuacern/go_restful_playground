@@ -23,9 +23,9 @@ func main() {
 			tasks.PUT("/:id", APIController.UpdateTask)
 			tasks.DELETE("/:id", APIController.DeleteTask)
 		}
-		ddn := v1.Group("/ddn")
+		nodes := v1.Group("/nodes")
 		{
-			appportals := ddn.Group("/appportals")
+			appportals := nodes.Group("/appportals")
 			{
 				appportals.GET("/", APIController.GetAppPortals)
 				appportals.POST("/", APIController.CreateAppPortal)
