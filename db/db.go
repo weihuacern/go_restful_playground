@@ -26,7 +26,7 @@ func Init() {
 	user := getEnv("PG_USER", "helios")
 	password := getEnv("PG_PASSWORD", "helios")
 	host := getEnv("PG_HOST", "localhost")
-	port := getEnv("PG_PORT", "8080")
+	port := getEnv("PG_PORT", "5432")
 	database := getEnv("PG_DB", "bedb")
 
 	dbinfo := fmt.Sprintf("user=%s password=%s host=%s port=%s dbname=%s sslmode=disable",
