@@ -10,14 +10,14 @@ services:
     links:
       - postgres
     environment:
-      - PORT=8080
+      - PORT=8100
       - PG_USER=helios
       - PG_PASSWORD=helios
       - PG_HOST=postgres
       - PG_PORT=5432
       - PG_DB=bedb
     ports:
-      - 8080:8080
+      - 8100:8100
   
   postgres:
     image: postgres:10.1-alpine
