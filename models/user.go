@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// AppPortal "Object
+// User "Object
 type User struct {
 	ID        uuid.UUID `json:"id"`
 	CreatedAt time.Time `json:"created_at"`
@@ -14,6 +14,7 @@ type User struct {
 	UserName  string    `json:"username"`
 	Password  string    `json:"password"`
 	Group     string    `json:"group"`
+	Status    string    `json:"status"`
 }
 
 func (user *User) BeforeCreate(scope *gorm.Scope) error {

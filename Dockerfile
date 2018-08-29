@@ -1,3 +1,3 @@
 FROM scratch
-ADD api-server-binary /
-CMD ["/api-server-binary"]
+ADD auth-server-binary /
+CMD ["/auth-server-binary"]
