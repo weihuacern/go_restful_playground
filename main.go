@@ -16,6 +16,13 @@ func main() {
 
 	v1 := r.Group("/api/v1")
 	{
+		users := v1.Group("/login")
+		{
+			users.GET("/", APIController.GetUsers)
+			users.POST("/", APIController.CreateUser)
+			users.PUT("/:id", APIController.UpdateUser)
+			users.DELETE("/:id", APIController.DeleteUser)
+		}
 		tasks := v1.Group("/tasks")
 		{
 			tasks.GET("/", APIController.GetTasks)
