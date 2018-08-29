@@ -42,6 +42,3 @@ go get -u github.com/gin-gonic/gin
 go get -u github.com/glaslos/ssdeep
 go get -u github.com/mitchellh/mapstructure
 ```
-
-### A very good example of go api server
-https://github.com/hugomd/go-todo

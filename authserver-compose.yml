@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  api_server:
-    image: apiserver:latest
+  auth_server:
+    image: authserver:latest
     build: .
     restart: always
     depends_on:
