@@ -1,1 +1,3 @@
 auth-server-binary
+./init/*
+./postgres-data/*

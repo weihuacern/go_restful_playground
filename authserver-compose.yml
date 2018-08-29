@@ -31,5 +31,8 @@ services:
       - POSTGRES_PASSWORD=helios
       - POSTGRES_USER=helios
       - POSTGRES_DB=bedb
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d/
+      - ./postgres-data:/var/lib/postgresql/data
     ports:
       - 5432:5432
