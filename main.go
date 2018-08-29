@@ -16,7 +16,11 @@ func main() {
 
 	v1 := r.Group("/api/v1")
 	{
-		users := v1.Group("/login")
+		login := v1.Group("/login")
+		{
+			login.POST("/", APIController.LoginUser)
+		}
+		users := v1.Group("/users")
 		{
 			users.GET("/", APIController.GetUsers)
 			users.POST("/", APIController.CreateUser)

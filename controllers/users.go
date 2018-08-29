@@ -1,11 +1,10 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
-	"net/http"
-	//"github.com/gin-gonic/gin/binding"
 	"../db"
 	"../models"
+	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func GetUsers(c *gin.Context) {
@@ -55,4 +54,18 @@ func DeleteUser(c *gin.Context) {
 	}
 
 	db.Delete(&user)
+}
+
+func LoginUser(c *gin.Context) {
+	var user models.User
+	//var db = db.GetDB()
+
+	if err := c.BindJSON(&user); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	//db.Create(&user)
+	c.JSON(http.StatusOK, &user)
 }

@@ -21,8 +21,7 @@ https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-o
 #### dockerization
 ```bash
 ./create-binary.sh
-docker-compose build
-docker-compose up -d
+docker-compose -f ./authserver-compose.yml up -d
 
 cd benchmarks
 ./post.sh
