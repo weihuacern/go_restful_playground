@@ -1,6 +1,6 @@
 # go\_restful\_playground
 
-### api server
+### api server with jwt
 
 #### go packages
 ```bash
@@ -10,6 +10,7 @@ go get -u github.com/jinzhu/gorm
 go get -u github.com/mattn/go-sqlite3
 go get -u github.com/lib/pq
 go get -u github.com/satori/go.uuid
+go get -u github.com/dgrijalva/jwt-go
 go get -u github.com/tsenart/vegeta
 go run main.go
 ```
