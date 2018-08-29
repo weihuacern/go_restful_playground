@@ -56,7 +56,6 @@ func Init() {
 	log.Println("Database connected")
 
 	ModelDBMigrate(&models.Task{})
-	ModelDBMigrate(&models.AppPortal{})
 	ModelDBMigrate(&models.User{})
 }
 
