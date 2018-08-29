@@ -3,6 +3,8 @@ package api
 import (
 	"../db"
 	"../models"
+	"../utils"
+	//"encoding/json"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -57,15 +59,43 @@ func DeleteUser(c *gin.Context) {
 }
 
 func LoginUser(c *gin.Context) {
-	var user models.User
-	//var db = db.GetDB()
+	var login models.User
+	var db = db.GetDB()
 
-	if err := c.BindJSON(&user); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
+	if err := c.BindJSON(&login); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	//db.Create(&user)
-	c.JSON(http.StatusOK, &user)
+	var username string
+	var password string
+	var role string
+	/*
+		type Result struct {
+			username string
+			password string
+			role     string
+		}
+		var result Result
+	*/
+	rows, err := db.Raw("select user_name, password, role from users where user_name = ? and password = ? and status = 'active'", login.UserName, login.Password).Rows()
+	//rows, err := db.Raw("select user_name, password from users where status = 'active'").Rows()
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		rows.Scan(&username, &password, &role)
+	}
+	//result_b, _ := json.Marshal(result)
+	//c.JSON(http.StatusOK, gin.H{"message": result.group})
+	if username == "" || password == "" || role == "" {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Not a valid user"})
+		return
+	}
+	//FIXME, hard coded key in here
+	key := []byte("top secret")
+	jwt_token, err := utils.GenJWTString(key, username, role)
+	c.JSON(http.StatusOK, gin.H{"jwt": jwt_token})
 }

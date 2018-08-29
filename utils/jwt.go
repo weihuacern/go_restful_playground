@@ -1,10 +1,9 @@
-package main
+package utils
 
 import (
 	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
-	"log"
 	"math/rand"
 )
 
@@ -23,12 +22,12 @@ func GenSymmetricKey(bits int) (k []byte, err error) {
 	return k, nil
 }
 
-func GenJWTString(hmacSampleSecret []byte) (string, error) {
+func GenJWTString(hmacSampleSecret []byte, user string, role string) (string, error) {
 	// Create a new token object, specifying signing method and the claims
 	// you would like it to contain.
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"xusr": "helios",
-		"xpwd": "Helios12$",
+		"xuser": user,
+		"xrole": role,
 	})
 
 	// Sign and get the complete encoded token as a string using the secret
@@ -53,32 +52,9 @@ func ParseJWTString(tokenString string, hmacSampleSecret []byte) {
 	})
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		fmt.Println("xusr", claims["xusr"])
-		fmt.Println("xpwd", claims["xpwd"])
+		fmt.Println("xuser", claims["xuser"])
+		fmt.Println("xrole", claims["xrole"])
 	} else {
 		fmt.Println(err)
 	}
-}
-
-func main() {
-	test_b := []byte("Here is a string....")
-	fmt.Println(test_b)
-	key, err := GenSymmetricKey(256)
-	if err != nil {
-		log.Println("Failed to generate symmetric key")
-		panic(err)
-		return
-	} else {
-		fmt.Println(key)
-	}
-
-	jwt_token, err := GenJWTString(key)
-	if err != nil {
-		log.Println("Failed to generate jwt token")
-		panic(err)
-		return
-	} else {
-		fmt.Println(jwt_token)
-	}
-	ParseJWTString(jwt_token, key)
 }

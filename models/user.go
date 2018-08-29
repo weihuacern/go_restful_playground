@@ -13,7 +13,7 @@ type User struct {
 	UpdatedAt time.Time `json:"updated_at"`
 	UserName  string    `json:"username"`
 	Password  string    `json:"password"`
-	Group     string    `json:"group"`
+	Role      string    `json:"role"`
 	Status    string    `json:"status"`
 }
 
