@@ -57,6 +57,7 @@ func Init() {
 
 	ModelDBMigrate(&models.Task{})
 	ModelDBMigrate(&models.AppPortal{})
+	ModelDBMigrate(&models.User{})
 }
 
 //GetDB ...
