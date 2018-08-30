@@ -36,6 +36,10 @@ docker container cp auth-server-binary gorestfulplayground_auth_server_1:/
 docker container restart gorestfulplayground_auth_server_1
 ```
 
+```bash
+curl -i -H "Content-Type: application/json" --data @login.json http://192.168.7.140:8100/api/v1/login/
+```
+
 ### scanner
 ```bash
 go get -u golang.org/x/lint/golint

@@ -69,16 +69,7 @@ func LoginUser(c *gin.Context) {
 	var username string
 	var password string
 	var role string
-	/*
-		type Result struct {
-			username string
-			password string
-			role     string
-		}
-		var result Result
-	*/
 	rows, err := db.Raw("select user_name, password, role from users where user_name = ? and password = ? and status = 'active'", login.UserName, login.Password).Rows()
-	//rows, err := db.Raw("select user_name, password from users where status = 'active'").Rows()
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -88,8 +79,6 @@ func LoginUser(c *gin.Context) {
 	for rows.Next() {
 		rows.Scan(&username, &password, &role)
 	}
-	//result_b, _ := json.Marshal(result)
-	//c.JSON(http.StatusOK, gin.H{"message": result.group})
 	if username == "" || password == "" || role == "" {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Not a valid user"})
 		return
@@ -97,5 +86,6 @@ func LoginUser(c *gin.Context) {
 	//FIXME, hard coded key in here
 	key := []byte("top secret")
 	jwt_token, err := utils.GenJWTString(key, username, role)
-	c.JSON(http.StatusOK, gin.H{"jwt": jwt_token})
+	c.Header("Xauth", jwt_token)
+	c.JSON(http.StatusOK, gin.H{"success": "Login success, Xauth is issued"})
 }

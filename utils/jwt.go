@@ -26,8 +26,8 @@ func GenJWTString(hmacSampleSecret []byte, user string, role string) (string, er
 	// Create a new token object, specifying signing method and the claims
 	// you would like it to contain.
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"xuser": user,
-		"xrole": role,
+		"Xuser": user,
+		"Xrole": role,
 	})
 
 	// Sign and get the complete encoded token as a string using the secret
@@ -52,8 +52,8 @@ func ParseJWTString(tokenString string, hmacSampleSecret []byte) {
 	})
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		fmt.Println("xuser", claims["xuser"])
-		fmt.Println("xrole", claims["xrole"])
+		fmt.Println("Xuser", claims["Xuser"])
+		fmt.Println("Xrole", claims["Xrole"])
 	} else {
 		fmt.Println(err)
 	}
