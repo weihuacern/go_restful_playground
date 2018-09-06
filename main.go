@@ -3,8 +3,12 @@ package main
 import (
 	APIController "./controllers"
 	"./db"
+	"./utils"
+	//"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
+	"net/http"
+	_ "strings"
 )
 
 func main() {
@@ -34,6 +38,24 @@ func main() {
 			tasks.PUT("/:id", APIController.UpdateTask)
 			tasks.DELETE("/:id", APIController.DeleteTask)
 		}
+	}
+
+	//django api server from hua
+	v0_django := r.Group("/api/v0")
+	{
+		v0_django.GET("/ds/servers", func(c *gin.Context) {
+			c.Redirect(http.StatusMovedPermanently, utils.GetEnv("PROXY_DATASOURCE_DJANGO_API", utils.PROXY_DATASOURCE_DJANGO_API)+c.Request.URL.String())
+		})
+		v0_django.GET("/ds/services", func(c *gin.Context) {
+			c.Redirect(http.StatusMovedPermanently, utils.GetEnv("PROXY_DATASOURCE_DJANGO_API", utils.PROXY_DATASOURCE_DJANGO_API)+c.Request.URL.String())
+		})
+	}
+	//FIXME, /api/datashare/v1? need to redirect to somewhere
+	v1_nodejs := r.Group("/api/v1")
+	{
+		v1_nodejs.GET("/contract", func(c *gin.Context) {
+			c.Redirect(http.StatusMovedPermanently, utils.GetEnv("PROXY_DATASHARE_NODEJS_API", utils.PROXY_DATASHARE_NODEJS_API)+c.Request.URL.String())
+		})
 	}
 	r.Run()
 }

@@ -12,6 +12,7 @@ go get -u github.com/lib/pq
 go get -u github.com/satori/go.uuid
 go get -u github.com/dgrijalva/jwt-go
 go get -u github.com/tsenart/vegeta
+go get -u github.com/golang/protobuf/protoc-gen-go
 go run main.go
 ```
 #### install docker on ubuntu
@@ -37,6 +38,9 @@ docker container restart gorestfulplayground_auth_server_1
 ```
 
 ```bash
+http://192.168.7.140:8100/api/v1/contract?role=provider
+http://192.168.7.140:8100/api/v0/ds/servers/
+cd benchmarks
 curl -i -H "Content-Type: application/json" --data @login.json http://192.168.7.140:8100/api/v1/login/
 ```
 
