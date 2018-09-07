@@ -8,7 +8,6 @@ import (
 	//"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
-	"net/http"
 	_ "strings"
 )
 
@@ -44,19 +43,16 @@ func main() {
 	//django api server from hua
 	v0_django := r.Group("/api/v0")
 	{
-		v0_django.GET("/ds/servers", middleware.AuthMiddleWare(utils.ROLEACC_DATASOURCE_DJANGO), func(c *gin.Context) {
-			c.Redirect(http.StatusTemporaryRedirect, utils.GetEnv("PROXY_DATASOURCE_DJANGO_API", utils.PROXY_DATASOURCE_DJANGO_API)+c.Request.URL.String())
-		})
-		v0_django.GET("/ds/services", middleware.AuthMiddleWare(utils.ROLEACC_DATASOURCE_DJANGO), func(c *gin.Context) {
-			c.Redirect(http.StatusTemporaryRedirect, utils.GetEnv("PROXY_DATASOURCE_DJANGO_API", utils.PROXY_DATASOURCE_DJANGO_API)+c.Request.URL.String())
-		})
+		v0_django.GET("/ds/servers", middleware.AuthMiddleWare(utils.ROLEACC_DATASOURCE_DJANGO), APIController.ProxyRedirect("PROXY_DATASOURCE_DJANGO_API"))
+		v0_django.GET("/ds/services", middleware.AuthMiddleWare(utils.ROLEACC_DATASOURCE_DJANGO), APIController.ProxyRedirect("PROXY_DATASOURCE_DJANGO_API"))
+		//v0_django.GET("/ds/servers", middleware.AuthMiddleWare(utils.ROLEACC_DATASOURCE_DJANGO), func(c *gin.Context) {
+		//	c.Redirect(http.StatusUseProxy, utils.GetEnv("PROXY_DATASOURCE_DJANGO_API", utils.PROXY_DATASOURCE_DJANGO_API)+c.Request.URL.String())
+		//})
 	}
 	//FIXME, /api/datashare/v1? need to redirect to somewhere
 	v1_nodejs := r.Group("/api/v1")
 	{
-		v1_nodejs.GET("/contract", middleware.AuthMiddleWare(utils.ROLEACC_DATASHARE_NODEJS), func(c *gin.Context) {
-			c.Redirect(http.StatusTemporaryRedirect, utils.GetEnv("PROXY_DATASHARE_NODEJS_API", utils.PROXY_DATASHARE_NODEJS_API)+c.Request.URL.String())
-		})
+		v1_nodejs.GET("/contract", middleware.AuthMiddleWare(utils.ROLEACC_DATASHARE_NODEJS), APIController.ProxyRedirect("PROXY_DATASHARE_NODEJS_API"))
 	}
 	r.Run()
 }
