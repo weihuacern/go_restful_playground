@@ -42,6 +42,8 @@ http://192.168.7.140:8100/api/v1/contract?role=provider
 http://192.168.7.140:8100/api/v0/ds/servers/
 cd benchmarks
 curl -i -H "Content-Type: application/json" --data @login.json http://192.168.7.140:8100/api/v1/login/
+curl -i -H "Xauth: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJYcm9sZSI6ImFkbWluIiwiWHVzZXIiOiJoZWxpb3MifQ.lNA0CQiMmdF40rmwEpKFBmzTUYfhtaIwQiNuPNdIKc0" -H "Content-Type: application/json" http://192.168.7.140:8100/api/v0/ds/services
+curl -i -H "Xauth: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJYcm9sZSI6InVzZXIiLCJYdXNlciI6InRpbSJ9.9JuBN2dHXgk_0krlqq-qc9s1fVXmJlzdUvZdkfUbme4" -H "Content-Type: application/json" http://192.168.7.140:8100/api/v0/ds/services
 ```
 
 ### scanner
