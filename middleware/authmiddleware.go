@@ -8,7 +8,7 @@ import (
 	_ "reflect"
 )
 
-func AuthMiddleWare() gin.HandlerFunc {
+func AuthMiddleWare(roles_acc map[string]bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		seed := utils.GetEnv("GLOBAL_SEED", utils.GLOBAL_SEED)
 		key := []byte(seed)
@@ -20,8 +20,8 @@ func AuthMiddleWare() gin.HandlerFunc {
 			return
 		} else {
 			//fmt.Println(res["Xrole"])
-			//FIXME, need to avoid hardcode
-			if res["Xrole"] != "admin" {
+			//FIXME, need to move to db
+			if !roles_acc[res["Xrole"]] {
 				c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 				c.Abort()
 				return
