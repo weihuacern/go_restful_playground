@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"math/rand"
+	_ "reflect"
 )
 
 func GenSymmetricKey(bits int) (k []byte, err error) {
@@ -29,14 +30,13 @@ func GenJWTString(hmacSampleSecret []byte, user string, role string) (string, er
 		"Xuser": user,
 		"Xrole": role,
 	})
-
 	// Sign and get the complete encoded token as a string using the secret
 	tokenString, err := token.SignedString(hmacSampleSecret)
 	//fmt.Println(tokenString, err)
 	return tokenString, err
 }
 
-func ParseJWTString(tokenString string, hmacSampleSecret []byte) {
+func ParseJWTString(tokenString string, hmacSampleSecret []byte) (map[string]string, error) {
 	// Parse takes the token string and a function for looking up the key. The latter is especially
 	// useful if you use multiple keys for your application.  The standard is to use 'kid' in the
 	// head of the token to identify which key to use, but the parsed token (head and claims) is provided
@@ -46,15 +46,22 @@ func ParseJWTString(tokenString string, hmacSampleSecret []byte) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
-
 		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
 		return hmacSampleSecret, nil
 	})
 
+	var res map[string]string
+	res = make(map[string]string)
+
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		fmt.Println("Xuser", claims["Xuser"])
-		fmt.Println("Xrole", claims["Xrole"])
+		//fmt.Println("Xuser", claims["Xuser"].(string))
+		//fmt.Println("Xrole", claims["Xrole"].(string))
+		//fmt.Println(reflect.TypeOf(claims["Xrole"].(string)))
+		res["Xuser"] = claims["Xuser"].(string)
+		res["Xrole"] = claims["Xrole"].(string)
 	} else {
 		fmt.Println(err)
+		res["Error"] = "Error in jwt parsing!"
 	}
+	return res, err
 }

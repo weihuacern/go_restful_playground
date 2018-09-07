@@ -3,6 +3,7 @@ package main
 import (
 	APIController "./controllers"
 	"./db"
+	"./middleware"
 	"./utils"
 	//"fmt"
 	"github.com/gin-gonic/gin"
@@ -43,10 +44,10 @@ func main() {
 	//django api server from hua
 	v0_django := r.Group("/api/v0")
 	{
-		v0_django.GET("/ds/servers", func(c *gin.Context) {
+		v0_django.GET("/ds/servers", middleware.AuthMiddleWare(), func(c *gin.Context) {
 			c.Redirect(http.StatusMovedPermanently, utils.GetEnv("PROXY_DATASOURCE_DJANGO_API", utils.PROXY_DATASOURCE_DJANGO_API)+c.Request.URL.String())
 		})
-		v0_django.GET("/ds/services", func(c *gin.Context) {
+		v0_django.GET("/ds/services", middleware.AuthMiddleWare(), func(c *gin.Context) {
 			c.Redirect(http.StatusMovedPermanently, utils.GetEnv("PROXY_DATASOURCE_DJANGO_API", utils.PROXY_DATASOURCE_DJANGO_API)+c.Request.URL.String())
 		})
 	}
