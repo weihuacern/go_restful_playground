@@ -1,10 +1,10 @@
 package main
 
 import (
-	APIController "./controllers"
-	"./db"
-	"./middleware"
-	"./utils"
+	APIController "./src/controllers"
+	"./src/db"
+	"./src/middleware"
+	"./src/utils"
 	//"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
