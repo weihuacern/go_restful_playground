@@ -83,8 +83,9 @@ func LoginUser(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Not a valid user"})
 		return
 	}
-	//FIXME, hard coded key in here
-	key := []byte("top secret")
+
+	seed := utils.GetEnv("GLOBAL_SEED", utils.GLOBAL_SEED)
+	key := []byte(seed)
 	jwt_token, err := utils.GenJWTString(key, username, role)
 	c.Header("Xauth", jwt_token)
 	c.JSON(http.StatusOK, gin.H{"success": "Login success, Xauth is issued"})
