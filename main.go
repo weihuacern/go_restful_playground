@@ -45,9 +45,6 @@ func main() {
 	{
 		v0_django.GET("/ds/servers", middleware.AuthMiddleWare(utils.ROLEACC_DATASOURCE_DJANGO), APIController.ProxyRedirect("PROXY_DATASOURCE_DJANGO_API"))
 		v0_django.GET("/ds/services", middleware.AuthMiddleWare(utils.ROLEACC_DATASOURCE_DJANGO), APIController.ProxyRedirect("PROXY_DATASOURCE_DJANGO_API"))
-		//v0_django.GET("/ds/servers", middleware.AuthMiddleWare(utils.ROLEACC_DATASOURCE_DJANGO), func(c *gin.Context) {
-		//	c.Redirect(http.StatusUseProxy, utils.GetEnv("PROXY_DATASOURCE_DJANGO_API", utils.PROXY_DATASOURCE_DJANGO_API)+c.Request.URL.String())
-		//})
 	}
 	//FIXME, /api/datashare/v1? need to redirect to somewhere
 	v1_nodejs := r.Group("/api/v1")
