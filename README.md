@@ -61,3 +61,9 @@ go get -u github.com/mitchellh/mapstructure
 ```bash
 yum install pam-devel
 ```
+
+### test
+```bash
+cd test
+sudo GOPATH=$GOPATH $(which go) test -v
+```

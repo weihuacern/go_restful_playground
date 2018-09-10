@@ -24,20 +24,22 @@ func main() {
 		{
 			login.POST("/", APIController.LoginUser)
 		}
-		users := v1.Group("/users")
-		{
-			users.GET("/", APIController.GetUsers)
-			users.POST("/", APIController.CreateUser)
-			users.PUT("/:id", APIController.UpdateUser)
-			users.DELETE("/:id", APIController.DeleteUser)
-		}
-		tasks := v1.Group("/tasks")
-		{
-			tasks.GET("/", APIController.GetTasks)
-			tasks.POST("/", APIController.CreateTask)
-			tasks.PUT("/:id", APIController.UpdateTask)
-			tasks.DELETE("/:id", APIController.DeleteTask)
-		}
+		/*
+			users := v1.Group("/users")
+			{
+				users.GET("/", APIController.GetUsers)
+				users.POST("/", APIController.CreateUser)
+				users.PUT("/:id", APIController.UpdateUser)
+				users.DELETE("/:id", APIController.DeleteUser)
+			}
+			tasks := v1.Group("/tasks")
+			{
+				tasks.GET("/", APIController.GetTasks)
+				tasks.POST("/", APIController.CreateTask)
+				tasks.PUT("/:id", APIController.UpdateTask)
+				tasks.DELETE("/:id", APIController.DeleteTask)
+			}
+		*/
 	}
 
 	//django api server from hua

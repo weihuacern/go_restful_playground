@@ -1,14 +1,19 @@
 package api
 
 import (
-	"../db"
+	//"../db"
 	"../models"
+	//"../pam"
 	"../utils"
 	//"encoding/json"
+	//"errors"
+	//"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	//"os/user"
 )
 
+/*
 func GetUsers(c *gin.Context) {
 
 	var users []models.User
@@ -57,10 +62,34 @@ func DeleteUser(c *gin.Context) {
 
 	db.Delete(&user)
 }
+*/
+
+func PamAuth(usr string, pwd string) (string, error) {
+	/*
+		u, _ := user.Current()
+		if u.Uid != "0" {
+			fmt.Println("run this test as root")
+		}
+		//FIXME, auth config helios_auth hardcoded
+		tx, err := pam.StartFunc("helios_auth", "hua", func(s pam.Style, msg string) (string, error) {
+			return "Helios123", nil
+		})
+		if err != nil {
+			fmt.Println("start #error: %v", err)
+			return "", err
+		}
+		err = tx.Authenticate(0)
+		if err != nil {
+			fmt.Println("authenticate #error: %v", err)
+			return "", err
+		}
+	*/
+	//return "helios", err
+	return "helios", nil
+}
 
 func LoginUser(c *gin.Context) {
 	var login models.User
-	var db = db.GetDB()
 
 	if err := c.BindJSON(&login); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -68,18 +97,26 @@ func LoginUser(c *gin.Context) {
 	}
 	var username string
 	var password string
-	var role string
-	rows, err := db.Raw("select user_name, password, role from users where user_name = ? and password = ? and status = 'active'", login.UserName, login.Password).Rows()
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+	/*
+		//db authentication
+		var db = db.GetDB()
+		rows, err := db.Raw("select user_name, password, role from users where user_name = ? and password = ? and status = 'active'", login.UserName, login.Password).Rows()
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
 
-	defer rows.Close()
-	for rows.Next() {
-		rows.Scan(&username, &password, &role)
-	}
-	if username == "" || password == "" || role == "" {
+		defer rows.Close()
+		for rows.Next() {
+			rows.Scan(&username, &password, &role)
+		}
+	*/
+	//linux pam authntication
+	username = login.UserName
+	password = login.Password
+	role, err := PamAuth(username, password)
+	//FIXME, helios group hardcoded in here
+	if username == "" || password == "" || role != "helios" || err != nil {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Not a valid user"})
 		return
 	}
