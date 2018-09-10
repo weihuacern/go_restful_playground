@@ -56,3 +56,8 @@ go get -u github.com/gin-gonic/gin
 go get -u github.com/glaslos/ssdeep
 go get -u github.com/mitchellh/mapstructure
 ```
+
+### pam
+```bash
+yum install pam-devel
+```
