@@ -3,14 +3,14 @@ package api
 import (
 	//"../db"
 	"../models"
-	//"../pam"
+	"../pam"
 	"../utils"
 	//"encoding/json"
 	//"errors"
-	//"fmt"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	//"os/user"
+	"os/user"
 )
 
 /*
@@ -65,27 +65,25 @@ func DeleteUser(c *gin.Context) {
 */
 
 func PamAuth(usr string, pwd string) (string, error) {
-	/*
-		u, _ := user.Current()
-		if u.Uid != "0" {
-			fmt.Println("run this test as root")
-		}
-		//FIXME, auth config helios_auth hardcoded
-		tx, err := pam.StartFunc("helios_auth", "hua", func(s pam.Style, msg string) (string, error) {
-			return "Helios123", nil
-		})
-		if err != nil {
-			fmt.Println("start #error: %v", err)
-			return "", err
-		}
-		err = tx.Authenticate(0)
-		if err != nil {
-			fmt.Println("authenticate #error: %v", err)
-			return "", err
-		}
-	*/
-	//return "helios", err
-	return "helios", nil
+	u, _ := user.Current()
+	if u.Uid != "0" {
+		fmt.Println("run this test as root")
+	}
+	//FIXME, auth config helios_auth hardcoded
+	tx, err := pam.StartFunc("helios_auth", usr, func(s pam.Style, msg string) (string, error) {
+		return pwd, nil
+	})
+	if err != nil {
+		fmt.Println("start #error: %v", err)
+		return "", err
+	}
+	err = tx.Authenticate(0)
+	if err != nil {
+		fmt.Println("authenticate #error: %v", err)
+		return "", err
+	}
+	return "helios", err
+	//return "helios", nil
 }
 
 func LoginUser(c *gin.Context) {

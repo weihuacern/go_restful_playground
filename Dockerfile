@@ -11,15 +11,16 @@ ENV GOLANG_VERSION 1.10.2
 COPY . /tmp/authserver/.
 #COPY *.patch /go-alpine-patches/
 RUN set -eux; \
-    apk add --no-cache bash && \
-    apk add --no-cache --virtual .build-deps \
+    apk add --no-cache \
+        bash \
         gcc \
+        musl \
         musl-dev \
         openssl \
         go \
         make \
         git \
-        linux-pam \
+        linux-pam  \
         linux-pam-dev \
     ; \
     export \
@@ -63,9 +64,9 @@ RUN set -eux; \
     go get -u github.com/tsenart/vegeta && \
     go get -u github.com/golang/protobuf/protoc-gen-go && \
     mkdir -p /opt/helios/bin &&\
-    cd /tmp/authserver && sh create-binary.sh && cp auth-server-binary /opt/helios/bin/ && cd / && rm -rf /tmp/authserver\
-    rm -rf /go-alpine-patches; \
-    apk del .build-deps
+    cd /tmp/authserver && sh create-binary.sh && cp auth-server-binary /opt/helios/bin/ && cd / \
+    #&& rm -rf /tmp/authserver\
+    rm -rf /go-alpine-patches;
 
 USER root
 RUN chmod -R 777 /opt/helios/bin
