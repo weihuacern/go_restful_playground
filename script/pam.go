@@ -21,7 +21,7 @@ import (
 // Keep in mind that unless run as root (or setuid root), the only
 // user's authentication that can succeed is that of the process owner.
 func main() {
-	t, err := pam.StartFunc("", "", func(s pam.Style, msg string) (string, error) {
+	t, err := pam.StartFunc("helios_auth", "", func(s pam.Style, msg string) (string, error) {
 		switch s {
 		case pam.PromptEchoOff:
 			//return "aaa", fmt.Errorf("bbb")
