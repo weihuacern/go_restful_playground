@@ -56,10 +56,10 @@ func (f ConversationFunc) RespondPAM(s Style, msg string) (string, error) {
 func cbPAMConv(s C.int, msg *C.char, c int) (*C.char, C.int) {
 	var r string
 	var err error
-	v := cbGet(c)
-	switch cb := v.(type) {
+	v := CallBackGet(c)
+	switch CallBack := v.(type) {
 	case ConversationHandler:
-		r, err = cb.RespondPAM(Style(s), C.GoString(msg))
+		r, err = CallBack.RespondPAM(Style(s), C.GoString(msg))
 	}
 	if err != nil {
 		return nil, C.PAM_CONV_ERR
@@ -79,7 +79,7 @@ type Transaction struct {
 // function.
 func transactionFinalizer(t *Transaction) {
 	C.pam_end(t.handle, t.status)
-	cbDelete(t.c)
+	CallBackDelete(t.c)
 }
 
 // Start initiates a new PAM transaction. Service is treated identically to
@@ -90,7 +90,7 @@ func transactionFinalizer(t *Transaction) {
 func Start(service, user string, handler ConversationHandler) (*Transaction, error) {
 	t := &Transaction{
 		conv: &C.struct_pam_conv{},
-		c:    cbAdd(handler),
+		c:    CallBackAdd(handler),
 	}
 	C.init_pam_conv(t.conv, C.long(t.c))
 	runtime.SetFinalizer(t, transactionFinalizer)
