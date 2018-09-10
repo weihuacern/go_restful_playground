@@ -1,14 +1,13 @@
-package pam_test
+package main
 
 import (
+	"../src/pam"
 	"bufio"
 	"errors"
 	"fmt"
+	"github.com/bgentry/speakeasy"
 	"log"
 	"os"
-	//"github.com/bgentry/speakeasy"
-	//"github.com/msteinert/pam"
-	"../src/pam"
 )
 
 // This example uses whatever default PAM service configuration is available
@@ -21,12 +20,12 @@ import (
 //
 // Keep in mind that unless run as root (or setuid root), the only
 // user's authentication that can succeed is that of the process owner.
-func Example_authenticate() {
+func main() {
 	t, err := pam.StartFunc("", "", func(s pam.Style, msg string) (string, error) {
 		switch s {
 		case pam.PromptEchoOff:
-			return "aaa", fmt.Errorf("bbb")
-			//return speakeasy.Ask(msg)
+			//return "aaa", fmt.Errorf("bbb")
+			return speakeasy.Ask(msg)
 		case pam.PromptEchoOn:
 			fmt.Print(msg + " ")
 			input, err := bufio.NewReader(os.Stdin).ReadString('\n')

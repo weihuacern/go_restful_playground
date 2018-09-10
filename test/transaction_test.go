@@ -3,7 +3,7 @@ package pam_test
 import (
 	"../src/pam"
 	"errors"
-	"fmt"
+	_ "fmt"
 	"os/user"
 	"runtime"
 	"testing"
@@ -14,8 +14,8 @@ func TestPAM_001(t *testing.T) {
 	if u.Uid != "0" {
 		t.Skip("run this test as root")
 	}
-	p := "Helios123"
-	tx, err := pam.StartFunc("", "hua", func(s pam.Style, msg string) (string, error) {
+	p := "Helios12$"
+	tx, err := pam.StartFunc("helios_auth", "root", func(s pam.Style, msg string) (string, error) {
 		return p, nil
 	})
 	if err != nil {
@@ -41,7 +41,7 @@ func TestPAM_002(t *testing.T) {
 	if u.Uid != "0" {
 		t.Skip("run this test as root")
 	}
-	tx, err := pam.StartFunc("", "", func(s pam.Style, msg string) (string, error) {
+	tx, err := pam.StartFunc("helios_auth", "", func(s pam.Style, msg string) (string, error) {
 		switch s {
 		case pam.PromptEchoOn:
 			return "hua", nil
@@ -84,9 +84,7 @@ func TestPAM_003(t *testing.T) {
 		User:     "hua",
 		Password: "Helios123",
 	}
-	fmt.Println(c.Password)
-
-	tx, err := pam.Start("", "", c)
+	tx, err := pam.Start("helios_auth", "", c)
 	if err != nil {
 		t.Fatalf("start #error: %v", err)
 	}
@@ -103,9 +101,9 @@ func TestPAM_004(t *testing.T) {
 		t.Skip("run this test as root")
 	}
 	c := Credentials{
-		Password: "Helios123",
+		Password: "Helios12$",
 	}
-	tx, err := pam.Start("", "hua", c)
+	tx, err := pam.Start("helios_auth", "root", c)
 	if err != nil {
 		t.Fatalf("start #error: %v", err)
 	}
@@ -121,7 +119,7 @@ func TestPAM_005(t *testing.T) {
 	if u.Uid != "0" {
 		t.Skip("run this test as root")
 	}
-	tx, err := pam.StartFunc("passwd", "hua", func(s pam.Style, msg string) (string, error) {
+	tx, err := pam.StartFunc("helios_auth", "hua", func(s pam.Style, msg string) (string, error) {
 		return "Helios123", nil
 	})
 	if err != nil {
@@ -139,8 +137,7 @@ func TestPAM_006(t *testing.T) {
 	if u.Uid != "0" {
 		t.Skip("run this test as root")
 	}
-	fmt.Println(u.Username)
-	tx, err := pam.StartFunc("passwd", u.Username, func(s pam.Style, msg string) (string, error) {
+	tx, err := pam.StartFunc("helios_auth", u.Username, func(s pam.Style, msg string) (string, error) {
 		return "Helios12$", nil
 	})
 	if err != nil {
@@ -162,7 +159,7 @@ func TestPAM_007(t *testing.T) {
 	if u.Uid != "0" {
 		t.Skip("run this test as root")
 	}
-	tx, err := pam.StartFunc("", "root", func(s pam.Style, msg string) (string, error) {
+	tx, err := pam.StartFunc("helios_auth", "root", func(s pam.Style, msg string) (string, error) {
 		return "", errors.New("Sorry, it didn't work")
 	})
 	if err != nil {
