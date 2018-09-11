@@ -64,7 +64,7 @@ func DeleteUser(c *gin.Context) {
 }
 */
 
-func PamAuth(usr string, pwd string) (string, error) {
+func PamAuth(usr string, pwd string) (map[string]bool, error) {
 	u, _ := user.Current()
 	if u.Uid != "0" {
 		fmt.Println("run this test as root")
@@ -75,15 +75,23 @@ func PamAuth(usr string, pwd string) (string, error) {
 	})
 	if err != nil {
 		fmt.Println("start #error: %v", err)
-		return "", err
+		return map[string]bool{}, err
 	}
 	err = tx.Authenticate(0)
 	if err != nil {
 		fmt.Println("authenticate #error: %v", err)
-		return "", err
+		return map[string]bool{}, err
 	}
-	return "helios", err
-	//return "helios", nil
+
+	auth_u, _ := user.Lookup(usr)
+	auth_gids, _ := auth_u.GroupIds()
+	auth_gnames := make(map[string]bool)
+	for _, gid := range auth_gids {
+		thisgroup, _ := user.LookupGroupId(gid)
+		fmt.Println(thisgroup.Name)
+		auth_gnames[thisgroup.Name] = true
+	}
+	return auth_gnames, err
 }
 
 func LoginUser(c *gin.Context) {
@@ -95,6 +103,7 @@ func LoginUser(c *gin.Context) {
 	}
 	var username string
 	var password string
+	var role string
 	/*
 		//db authentication
 		var db = db.GetDB()
@@ -112,9 +121,17 @@ func LoginUser(c *gin.Context) {
 	//linux pam authntication
 	username = login.UserName
 	password = login.Password
-	role, err := PamAuth(username, password)
-	//FIXME, helios group hardcoded in here
-	if username == "" || password == "" || role != "helios" || err != nil {
+	role = ""
+	//FIXME, hardcoded roles
+	valid_roles := []string{"helios", "helios_datasharing", "helios_datasource"}
+	roles_map, err := PamAuth(username, password)
+	for _, valid_role := range valid_roles {
+		if _, ok := roles_map[valid_role]; ok {
+			role = valid_role
+			break
+		}
+	}
+	if username == "" || password == "" || role == "" || err != nil {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Not a valid user"})
 		return
 	}

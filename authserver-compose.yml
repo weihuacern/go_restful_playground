@@ -17,6 +17,17 @@ services:
       - PG_HOST=postgres
       - PG_PORT=5432
       - PG_DB=bedb
+    volumes:
+      # For access by each user
+      - /home:/home
+      # Authentication
+      # passwd/group should be mounted into any container
+      # needing to share the user/group IDs
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+      # Shadow should only be mounted into containers
+      # needing to authenticate against PAM
+      - /etc/shadow:/etc/shadow:ro
     ports:
       - 8100:8100
   

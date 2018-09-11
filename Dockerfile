@@ -64,8 +64,7 @@ RUN set -eux; \
     go get -u github.com/tsenart/vegeta && \
     go get -u github.com/golang/protobuf/protoc-gen-go && \
     mkdir -p /opt/helios/bin &&\
-    cd /tmp/authserver && sh create-binary.sh && cp auth-server-binary /opt/helios/bin/ && cd / \
-    #&& rm -rf /tmp/authserver\
+    cd /tmp/authserver && sh create-binary.sh && cp auth-server-binary /opt/helios/bin/ && cd / && rm -rf /tmp/authserver\
     rm -rf /go-alpine-patches;
 
 USER root
