@@ -67,6 +67,17 @@ RUN set -eux; \
     cd /tmp/authserver && sh create-binary.sh && cp auth-server-binary /opt/helios/bin/ && cd / && rm -rf /tmp/authserver\
     rm -rf /go-alpine-patches;
 
+#dump helios_auth pam module
+RUN touch /etc/pam.d/helios_auth && \
+    cat /dev/null > /etc/pam.d/helios_auth && \
+    echo "# check authorization" >> /etc/pam.d/helios_auth && \
+    echo "auth       required     pam_unix.so" >> /etc/pam.d/helios_auth && \
+    echo "account    required     pam_unix.so" >> /etc/pam.d/helios_auth && \
+    echo "password   requisite    pam_pwquality.so try_first_pass local_users_only retry=3 authtok_type=" >> /etc/pam.d/helios_auth && \
+    echo "password   sufficient   pam_unix.so sha512 shadow nullok try_first_pass use_authtok" >> /etc/pam.d/helios_auth && \
+    echo "password   required     pam_deny.so" >> /etc/pam.d/helios_auth && \
+    echo "session    required     pam_unix.so" >> /etc/pam.d/helios_auth;
+
 USER root
 RUN chmod -R 777 /opt/helios/bin
 WORKDIR /opt/helios/bin

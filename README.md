@@ -55,6 +55,12 @@ go get -u github.com/go-sql-driver/mysql
 go get -u github.com/gin-gonic/gin
 go get -u github.com/glaslos/ssdeep
 go get -u github.com/mitchellh/mapstructure
+go get -u github.com/gocql/gocql
+```
+
+### svcmgr
+```
+go get -u github.com/satori/go.uuid
 ```
 
 ### pam
